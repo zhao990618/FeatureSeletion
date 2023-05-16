@@ -1,0 +1,18 @@
+A hybrid particle swarm optimization for feature subset selection by integrating a novel local search strategy
+
+
+局部搜索的粒子群
+
+先将特征通过和其他所有特征的相似度计算出来，然后通过特征进行一排升序排序，
+前半部分作为不相似特征矩阵，后半部分为相似特征矩阵
+
+随机选择sf ，作为本次实验所固定的特征数量，该特征数量中，需要存在 ns个相似特征 nd个不相似特征
+
+通过在跟新粒子群时，在每一个粒子选择出新的位置后，先计算fitness  得出acc
+进行重新选择
+通过限制特征数量来重新分配一个特征选择矩阵，
+ns多了（少了）就删除（添加）位于相似矩阵中的特征
+nd多了（少了）就删除（添加）位于不相似矩阵中的特征
+通过对于新组成的特征选择矩阵进行一个fitness计算  得出acc
+比较这两次fitness的acc 的值
+那个好，则该粒子本轮选择的特征子集组合就是哪一个
