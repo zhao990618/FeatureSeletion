@@ -35,8 +35,6 @@ def init_pop(X, Y, N, D, model, thresSet, kf, gp, bp, I):
     :return:
     """
     M = np.identity(D).tolist()  # 生成一个单位阵
-
-    ###
     score = fit(X, Y, M, model, thresSet, D, kf)  # 得到所有特征的评分
     ######
     # 获取优秀特征和较差特征
@@ -417,8 +415,7 @@ def FTGGA(opts):
 
 if __name__ == '__main__':
     # load data
-    # filename = ".\\dataCSV_high\\end\\arcene(200,10000).csv"
-    filename = "D:\MachineLearningBackUp\dataCSV\dataCSV_high\\arcene.csv"
+    filename = ".\\dataCSV_high\\end\\arcene(200,10000).csv"
     X, Y = load_csv(filename)
     minmax = preprocessing.MinMaxScaler()  # 标准化
     X = minmax.fit_transform(X)
@@ -442,32 +439,8 @@ if __name__ == '__main__':
     I = 0.01  # 特征阈值每次更新的变化幅度, 默认 I = 0.01
     minThres = 0.05  # 特征的最小阈值
     maxThres = 0.75  # 特征的最大阈值
-    M = 5  # 算法循环次数
-    outputFile = False  # 是否保存,如果保存直接输入 路径+文件名
 
     opts = {'X': X, 'Y': Y, 'N': N, 'D': D, 'T': T, 'model': model,
             'kf': kf, 'initThres': initThres, 'gp': gp, 'bp': bp,
             'I': I, 'minThres': minThres, 'maxThres': maxThres}
-
-    m = 0
-    if outputFile:
-        file = xlwt.Workbook('encoding = utf-8')  # 设置工作簿编码
-        sheet1 = file.add_sheet('sheet1', cell_overwrite_ok=True)  # 创建sheet工作表
-    while m < M:
-        print(m)
-        start_time = time.time()
-        fmdl = FTGGA(opts)
-        end_time = time.time()
-        runtime = "time:" + str(end_time - start_time)
-        curve = fmdl['curve']
-        if outputFile:
-            sheet1.write(0, m, os.path.basename(filename))  #
-            sheet1.write(1, m, fmdl['parameter'])
-            sheet1.write(2, m, fmdl['Acc'])  #
-            sheet1.write(3, m, fmdl['featureNumber'])  #
-            sheet1.write(4, m, runtime)  #
-            for j in range(len(curve)):  #
-                sheet1.write(j + 6, m, curve[j])
-        m = m + 1
-    if outputFile:
-        file.save(outputFile)
+    FTGGA(opts)
